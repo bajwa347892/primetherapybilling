@@ -4,9 +4,9 @@
   "description": "This is a Next.js project",
   "main": "test-supabase-connection.js",
   "scripts": {
-    "dev": "next dev",
-    "build": "prisma generate && next build",
-    "start": "next start"
+    "dev": "node init && next dev",
+    "build": "node init && prisma generate && next build",
+    "start": "node init && next start"
   },
   "repository": {
     "type": "git",
@@ -26,6 +26,7 @@
     "@supabase/ssr": "^0.10.2",
     "lucide-react": "^1.14.0",
     "marked": "^15.0.12",
+    "motion": "^14.5.0",
     "next": "^16.2.4",
     "nodemailer": "^6.9.13",
     "prisma": "^5.22.0",
