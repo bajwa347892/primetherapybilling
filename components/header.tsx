@@ -43,8 +43,8 @@ const THERAPY_SPECIALTIES = [
 
 const BILLING_SERVICES = [
   {
-    href: "/services/medical-billing-therapists",
-    label: "Medical Billing Therapists",
+    href: "/services/medical-billing",
+    label: "Medical Billing",
     iconPaths: [
       "M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z",
       "M14 2v6h6",
@@ -54,29 +54,29 @@ const BILLING_SERVICES = [
     ],
   },
   {
-    href: "/services/aba-therapy",
-    label: "ABA Therapy Billing",
+    href: "/services/revenue-cycle-management",
+    label: "Revenue Cycle Management",
     iconPaths: [
       "M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15",
     ],
   },
   {
-    href: "/services/insurance-credentialing-therapists", // ✅ UPDATED
-    label: "Insurance Credentialing Therapists", // ✅ UPDATED
+    href: "/services/credentialing",
+    label: "Credentialing & Contracting",
     iconPaths: [
       "M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z",
     ],
   },
   {
-    href: "/services/mental-health-billing",
-    label: "Mental Health Billing",
+    href: "/services/denial-management",
+    label: "Denial Management",
     iconPaths: [
       "M20.618 5.984A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016zM12 9v2m0 4h.01",
     ],
   },
   {
-    href: "/services/physical-therapy",
-    label: "Physical Therapy",
+    href: "/services/ar-follow-up",
+    label: "AR Follow-Up",
     iconPaths: [
       "M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z",
     ],
@@ -219,6 +219,7 @@ function DesktopDropdown({
     timeoutRef.current = setTimeout(() => setOpen(false), 100);
   };
 
+  // Close on outside click
   useEffect(() => {
     const handleClick = (e: MouseEvent) => {
       if (ref.current && !ref.current.contains(e.target as Node)) {
@@ -296,6 +297,7 @@ export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const pathname = usePathname();
 
+  // ── Scroll detection ──
   useEffect(() => {
     const update = () => setScrolled(window.scrollY > 10);
     window.addEventListener("scroll", update, { passive: true });
@@ -303,13 +305,13 @@ export default function Header() {
     return () => window.removeEventListener("scroll", update);
   }, []);
 
+  // ── Lock body scroll when mobile menu is open ──
   useEffect(() => {
     document.body.style.overflow = mobileOpen ? "hidden" : "";
-    return () => {
-      document.body.style.overflow = "";
-    };
+    return () => { document.body.style.overflow = ""; };
   }, [mobileOpen]);
 
+  // ── Close mobile menu on Escape key ──
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
       if (e.key === "Escape") setMobileOpen(false);
@@ -318,6 +320,7 @@ export default function Header() {
     return () => document.removeEventListener("keydown", handler);
   }, []);
 
+  // ── Handle home link click — scroll to top if already on home ──
   const handleHomeClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     if (pathname === "/") {
       e.preventDefault();
@@ -326,31 +329,12 @@ export default function Header() {
     setMobileOpen(false);
   };
 
-  const offerMessage =
-    "THANKSGIVING SAVINGS ARE HERE! Medical Billing Services Starting at Just 1.99%. Enjoy Efficient Revenue Cycle Management with Prime Therapy Billing. Claim Your Special Offer Today! | Terms & Conditions Apply.";
-
   return (
     <div className="fixed top-0 left-0 right-0 z-50 pointer-events-none">
-      <style>{`
-        @keyframes ptb-marquee {
-          0% {
-            transform: translateX(0%);
-          }
-          100% {
-            transform: translateX(-50%);
-          }
-        }
-        .ptb-marquee-track {
-          display: flex;
-          width: max-content;
-          animation: ptb-marquee 50s linear infinite;
-        }
-        .ptb-marquee-wrapper:hover .ptb-marquee-track {
-          animation-play-state: paused;
-        }
-      `}</style>
 
-      {/* TOP BAR */}
+      {/* ══════════════════════════════════════════════════════════════════
+          TOP BAR — hidden on mobile, slides in on scroll
+      ══════════════════════════════════════════════════════════════════ */}
       <div className="hidden md:block pointer-events-auto">
         <div
           aria-label="Contact information"
@@ -360,11 +344,11 @@ export default function Header() {
             opacity: scrolled ? 1 : 0,
             paddingTop: scrolled ? 6 : 0,
             paddingBottom: scrolled ? 6 : 0,
-            boxShadow:
-              "rgba(50,50,93,0.25) 0px 6px 12px -2px, rgba(0,0,0,0.3) 0px 3px 7px -3px",
+            boxShadow: "rgba(50,50,93,0.25) 0px 6px 12px -2px, rgba(0,0,0,0.3) 0px 3px 7px -3px",
           }}
         >
           <div className="container mx-auto px-4 flex justify-between items-center">
+            {/* Left — phone & email */}
             <div className="flex items-center gap-4 text-[13px]">
               <a
                 href="tel:+13464604441"
@@ -387,6 +371,7 @@ export default function Header() {
               </a>
             </div>
 
+            {/* Right — social icons */}
             <div className="flex items-center gap-3">
               {SOCIAL_LINKS.map((s) => (
                 <a
@@ -407,25 +392,21 @@ export default function Header() {
         </div>
       </div>
 
-      {/* MAIN NAVBAR */}
+      {/* ══════════════════════════════════════════════════════════════════
+          MAIN NAVBAR
+      ══════════════════════════════════════════════════════════════════ */}
       <div
-        className="pointer-events-auto bg-white relative z-10 transition-all duration-[350ms] ease-in-out"
+        className="pointer-events-auto bg-white transition-all duration-[350ms] ease-in-out"
         style={{
           margin: scrolled ? "0" : "10px 12px 0 12px",
           borderRadius: scrolled ? 0 : 12,
-          boxShadow:
-            "rgba(50,50,93,0.25) 0px 6px 12px -2px, rgba(0,0,0,0.3) 0px 3px 7px -3px",
+          boxShadow: "rgba(50,50,93,0.25) 0px 6px 12px -2px, rgba(0,0,0,0.3) 0px 3px 7px -3px",
         }}
       >
         <div className="container mx-auto px-4 flex items-center justify-between h-16 relative">
 
           {/* LOGO */}
-          <Link
-            href="/"
-            onClick={handleHomeClick}
-            aria-label="Prime Therapy Billing — Go to homepage"
-            className="flex-shrink-0"
-          >
+          <Link href="/" onClick={handleHomeClick} aria-label="Prime Therapy Billing — Go to homepage" className="flex-shrink-0">
             <Image
               src="/primetherapylogo.svg"
               alt="Prime Therapy Billing Logo"
@@ -436,36 +417,27 @@ export default function Header() {
             />
           </Link>
 
-          {/* DESKTOP NAV */}
+          {/* ── DESKTOP NAV ── */}
           <nav className="hidden lg:flex items-center h-full ml-auto" aria-label="Main navigation">
 
-            <Link
-              href="/"
-              onClick={handleHomeClick}
-              className="flex items-center h-full px-3 xl:px-4 text-sm font-semibold text-gray-700 hover:text-[#113356] transition-colors"
-            >
+            <Link href="/" onClick={handleHomeClick} className="flex items-center h-full px-3 xl:px-4 text-sm font-semibold text-gray-700 hover:text-[#113356] transition-colors">
               Home
             </Link>
 
-            <Link
-              href="/about-us"
-              className="flex items-center h-full px-3 xl:px-4 text-sm font-semibold text-gray-700 hover:text-[#113356] transition-colors"
-            >
+            <Link href="/about-us" className="flex items-center h-full px-3 xl:px-4 text-sm font-semibold text-gray-700 hover:text-[#113356] transition-colors">
               About Us
             </Link>
 
-            {/* SERVICES DROPDOWN */}
+            {/* ── SERVICES DROPDOWN ── */}
             <DesktopDropdown label="Services" width={560}>
               <div className="my-3 lg:my-4 mx-0 lg:mx-3">
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-0 lg:gap-4">
+                  {/* Column 1 */}
                   <div>
                     <ul className="list-none">
                       {servicesCol1.map((item) => (
                         <li key={item.href} className="mb-3 border-b border-gray-200 pb-2">
-                          <Link
-                            href={item.href}
-                            className="flex items-center text-gray-700 hover:text-[#113356] transition-colors text-sm"
-                          >
+                          <Link href={item.href} className="flex items-center text-gray-700 hover:text-[#113356] transition-colors text-sm">
                             <ServiceIcon paths={item.iconPaths} />
                             <span className="ml-3">{item.label}</span>
                           </Link>
@@ -473,14 +445,12 @@ export default function Header() {
                       ))}
                     </ul>
                   </div>
+                  {/* Column 2 */}
                   <div className="hidden lg:block">
                     <ul className="list-none">
                       {servicesCol2.map((item) => (
                         <li key={item.href} className="mb-3 border-b border-gray-200 pb-2">
-                          <Link
-                            href={item.href}
-                            className="flex items-center text-gray-700 hover:text-[#113356] transition-colors text-sm"
-                          >
+                          <Link href={item.href} className="flex items-center text-gray-700 hover:text-[#113356] transition-colors text-sm">
                             <ServiceIcon paths={item.iconPaths} />
                             <span className="ml-3">{item.label}</span>
                           </Link>
@@ -488,14 +458,12 @@ export default function Header() {
                       ))}
                     </ul>
                   </div>
+                  {/* Column 3 */}
                   <div className="hidden lg:block">
                     <ul className="list-none">
                       {servicesCol3.map((item) => (
                         <li key={item.href} className="mb-3 border-b border-gray-200 pb-2">
-                          <Link
-                            href={item.href}
-                            className="flex items-center text-gray-700 hover:text-[#113356] transition-colors text-sm"
-                          >
+                          <Link href={item.href} className="flex items-center text-gray-700 hover:text-[#113356] transition-colors text-sm">
                             <ServiceIcon paths={item.iconPaths} />
                             <span className="ml-3">{item.label}</span>
                           </Link>
@@ -507,38 +475,28 @@ export default function Header() {
               </div>
             </DesktopDropdown>
 
-            <Link
-              href="/specialties"
-              className="flex items-center h-full px-3 xl:px-4 text-sm font-semibold text-gray-700 hover:text-[#113356] transition-colors"
-            >
+            {/* ── SPECIALTIES — Simple Link ── */}
+            <Link href="/specialties" className="flex items-center h-full px-3 xl:px-4 text-sm font-semibold text-gray-700 hover:text-[#113356] transition-colors">
               Specialties
             </Link>
 
-            <Link
-              href="/pricing"
-              className="flex items-center h-full px-3 xl:px-4 text-sm font-semibold text-gray-700 hover:text-[#113356] transition-colors"
-            >
-              Pricing
+            <Link href="/payers" className="flex items-center h-full px-3 xl:px-4 text-sm font-semibold text-gray-700 hover:text-[#113356] transition-colors">
+              Private Payers
             </Link>
 
-            <Link
-              href="/blog"
-              className="flex items-center h-full px-3 xl:px-4 text-sm font-semibold text-gray-700 hover:text-[#113356] transition-colors"
-            >
+            <Link href="/blog" className="flex items-center h-full px-3 xl:px-4 text-sm font-semibold text-gray-700 hover:text-[#113356] transition-colors">
               Blog
             </Link>
 
+            {/* Contact CTA */}
             <div className="ml-4">
-              <Link
-                href="/contact-us"
-                className="bg-[#113356] text-white px-5 py-2 rounded text-sm font-semibold hover:bg-[#0d2645] transition-colors block"
-              >
+              <Link href="/contact-us" className="bg-[#113356] text-white px-5 py-2 rounded text-sm font-semibold hover:bg-[#0d2645] transition-colors block">
                 Contact Us
               </Link>
             </div>
           </nav>
 
-          {/* MOBILE HAMBURGER */}
+          {/* ── MOBILE HAMBURGER ── */}
           <div className="lg:hidden flex items-center">
             <button
               type="button"
@@ -554,40 +512,49 @@ export default function Header() {
             </button>
           </div>
         </div>
-      </div>
 
-      {/* MOVING SLIDER BELOW MENU BAR */}
-      <div
-        aria-label="Special Offer"
-        className="pointer-events-auto relative z-0 bg-[#113356] text-white overflow-hidden transition-all duration-[350ms] ease-in-out"
+      {/* ══════════════════════════════════════════════════════════════════
+          PROMO TICKER — inside the navbar card so it always matches its width
+      ══════════════════════════════════════════════════════════════════ */}
+      <Link
+        href="/contact-us"
+        aria-label="Thanksgiving special: Therapy medical billing at just 1.99%. Claim your deal today. Terms apply."
+        className="promo-ticker block overflow-hidden bg-[#113356] text-white text-[13px] sm:text-sm font-medium py-2 transition-all duration-[350ms] ease-in-out"
         style={{
-          margin: scrolled ? "0" : "4px 12px 0 12px",
-          borderRadius: scrolled ? 0 : 10,
-          boxShadow:
-            "rgba(50,50,93,0.2) 0px 4px 10px -2px, rgba(0,0,0,0.25) 0px 2px 5px -3px",
+          borderBottomLeftRadius: scrolled ? 0 : 12,
+          borderBottomRightRadius: scrolled ? 0 : 12,
         }}
       >
-        <div className="ptb-marquee-wrapper w-full overflow-hidden py-1.5 sm:py-2">
-          <div className="ptb-marquee-track text-xs sm:text-[13px] font-medium tracking-wide">
-            <div className="flex items-center shrink-0">
-              {[0, 1, 2].map((idx) => (
-                <span key={`a-${idx}`} className="inline-flex items-center whitespace-nowrap px-8">
-                  {offerMessage}
+        <div className="promo-ticker-track flex w-max whitespace-nowrap" aria-hidden="true">
+          {[0, 1].map((copy) => (
+            <div key={copy} className="flex">
+              {[0, 1, 2].map((i) => (
+                <span key={i} className="px-10">
+                  🍂 THANKSGIVING SPECIAL! Get Therapy Medical Billing at Just 1.99%. Save More &amp; Grow Your Practice with Prime Therapy Billing! 🎁 Claim Your Deal Today! | Terms Apply.
                 </span>
               ))}
             </div>
-            <div className="flex items-center shrink-0" aria-hidden="true">
-              {[0, 1, 2].map((idx) => (
-                <span key={`b-${idx}`} className="inline-flex items-center whitespace-nowrap px-8">
-                  {offerMessage}
-                </span>
-              ))}
-            </div>
-          </div>
+          ))}
         </div>
+      </Link>
       </div>
+      <style>{`
+        .promo-ticker-track { animation: promo-ticker-scroll 60s linear infinite; }
+        .promo-ticker:hover .promo-ticker-track { animation-play-state: paused; }
+        @keyframes promo-ticker-scroll {
+          from { transform: translateX(0); }
+          to { transform: translateX(-50%); }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .promo-ticker-track { animation: none; }
+        }
+      `}</style>
 
-      {/* MOBILE MENU OVERLAY + DRAWER */}
+      {/* ══════════════════════════════════════════════════════════════════
+          MOBILE MENU OVERLAY + DRAWER
+      ══════════════════════════════════════════════════════════════════ */}
+
+      {/* Backdrop */}
       {mobileOpen && (
         <div
           className="fixed inset-0 bg-black/50 z-40 pointer-events-auto"
@@ -596,6 +563,7 @@ export default function Header() {
         />
       )}
 
+      {/* Drawer */}
       <div
         id="mobile-menu"
         role="dialog"
@@ -635,30 +603,20 @@ export default function Header() {
         <div className="flex-1 overflow-y-auto">
           <nav className="p-4 flex flex-col" aria-label="Mobile navigation">
 
-            <Link
-              href="/"
-              onClick={handleHomeClick}
-              className="py-3 px-4 border-b border-gray-100 text-gray-800 font-semibold hover:text-[#113356] hover:bg-gray-50 transition-colors rounded"
-            >
+            <Link href="/" onClick={handleHomeClick} className="py-3 px-4 border-b border-gray-100 text-gray-800 font-semibold hover:text-[#113356] hover:bg-gray-50 transition-colors rounded">
               Home
             </Link>
 
-            <Link
-              href="/about-us"
-              onClick={() => setMobileOpen(false)}
-              className="py-3 px-4 border-b border-gray-100 text-gray-800 font-semibold hover:text-[#113356] hover:bg-gray-50 transition-colors rounded"
-            >
+            <Link href="/about-us" onClick={() => setMobileOpen(false)} className="py-3 px-4 border-b border-gray-100 text-gray-800 font-semibold hover:text-[#113356] hover:bg-gray-50 transition-colors rounded">
               About Us
             </Link>
 
-            <Link
-              href="/specialties"
-              onClick={() => setMobileOpen(false)}
-              className="py-3 px-4 border-b border-gray-100 text-gray-800 font-semibold hover:text-[#113356] hover:bg-gray-50 transition-colors rounded"
-            >
+            {/* Specialties — Simple Link */}
+            <Link href="/specialties" onClick={() => setMobileOpen(false)} className="py-3 px-4 border-b border-gray-100 text-gray-800 font-semibold hover:text-[#113356] hover:bg-gray-50 transition-colors rounded">
               Specialties
             </Link>
 
+            {/* Services accordion */}
             <MobileAccordion label="Services">
               <div className="ml-4 border-l-2 border-[#113356]/20 pl-3 space-y-0.5">
                 {BILLING_SERVICES.map((item) => (
@@ -675,27 +633,15 @@ export default function Header() {
               </div>
             </MobileAccordion>
 
-            <Link
-              href="/pricing"
-              onClick={() => setMobileOpen(false)}
-              className="py-3 px-4 border-b border-gray-100 text-gray-800 font-semibold hover:text-[#113356] hover:bg-gray-50 transition-colors rounded"
-            >
-              Pricing
+            <Link href="/payers" onClick={() => setMobileOpen(false)} className="py-3 px-4 border-b border-gray-100 text-gray-800 font-semibold hover:text-[#113356] hover:bg-gray-50 transition-colors rounded">
+              Private Payers
             </Link>
 
-            <Link
-              href="/blog"
-              onClick={() => setMobileOpen(false)}
-              className="py-3 px-4 border-b border-gray-100 text-gray-800 font-semibold hover:text-[#113356] hover:bg-gray-50 transition-colors rounded"
-            >
+            <Link href="/blog" onClick={() => setMobileOpen(false)} className="py-3 px-4 border-b border-gray-100 text-gray-800 font-semibold hover:text-[#113356] hover:bg-gray-50 transition-colors rounded">
               Blog
             </Link>
 
-            <Link
-              href="/contact-us"
-              onClick={() => setMobileOpen(false)}
-              className="py-3 px-4 text-gray-800 font-semibold hover:text-[#113356] hover:bg-gray-50 transition-colors rounded"
-            >
+            <Link href="/contact-us" onClick={() => setMobileOpen(false)} className="py-3 px-4 text-gray-800 font-semibold hover:text-[#113356] hover:bg-gray-50 transition-colors rounded">
               Contact Us
             </Link>
           </nav>
