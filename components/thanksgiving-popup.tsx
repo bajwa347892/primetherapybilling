@@ -82,9 +82,9 @@ export default function ThanksgivingPopup() {
       >
         <Image
           src="/thanksgiving-popup.png"
-          alt="Prime Therapy Billing - Happy Thanksgiving. Get complete therapy billing services at just 1.99% (was 3.99%). Limited time offer. Free Billing Audit. Free Practice Audit. Partner with us for medical billing and get a chance to avail up to 5 free payer credentialing. Terms and Conditions Applied."
-          width={1670}
-          height={942}
+          alt="Prime Therapy Billing - Happy Thanksgiving. Get complete therapy billing services at just 1.99% (was 3.99%). Limited time offer. Free Billing Audit. Free Practice Audit. Benefits Verification, Authorization & Follow-Up, Claims & Posting, EFT & Contracts. Terms and Conditions Applied."
+          width={1672}
+          height={941}
           priority
           sizes="(max-width: 960px) 100vw, 920px"
           className="block h-auto w-full select-none"
@@ -106,7 +106,7 @@ export default function ThanksgivingPopup() {
           onClick={openHeroPopup}
           aria-label="Partner with Prime Therapy Billing Today"
           className="tg-popup-cta absolute rounded-[12px] cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-white"
-          style={{ left: "4%", top: "79.6%", width: "51.1%", height: "8.9%" }}
+          style={{ left: "4.1%", top: "79.1%", width: "50.8%", height: "9.2%" }}
         />
       </div>
 
