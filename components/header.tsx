@@ -519,8 +519,17 @@ export default function Header() {
       <Link
         href="/contact-us"
         aria-label="Thanksgiving special: Therapy medical billing at just 1.99%. Claim your deal today. Terms apply."
-        className="promo-ticker block overflow-hidden bg-[#113356] text-white text-[13px] sm:text-sm font-medium py-2 transition-all duration-[350ms] ease-in-out"
+        className="promo-ticker block overflow-hidden text-white text-[13px] sm:text-sm font-medium py-2 transition-all duration-[350ms] ease-in-out"
         style={{
+          // Brown overlay keeps the white text readable over the autumn photo;
+          // the gradient underneath is the fallback while the image loads.
+          backgroundColor: "#5c2d13",
+          backgroundImage:
+            "linear-gradient(rgba(70, 30, 10, 0.55), rgba(70, 30, 10, 0.55)), url('/thanksgiving-ticker-bg.jpg'), linear-gradient(90deg, #5c2d13 0%, #55210e 15%, #6a3613 35%, #85532c 55%, #643215 72%, #693d27 88%, #5e2f15 100%)",
+          backgroundSize: "auto, auto 300%, auto",
+          backgroundPosition: "center, center 55%, center",
+          backgroundRepeat: "no-repeat, repeat-x, no-repeat",
+          textShadow: "0 1px 2px rgba(0, 0, 0, 0.6)",
           borderBottomLeftRadius: scrolled ? 0 : 12,
           borderBottomRightRadius: scrolled ? 0 : 12,
         }}
@@ -529,8 +538,8 @@ export default function Header() {
           {[0, 1].map((copy) => (
             <div key={copy} className="flex">
               {[0, 1, 2].map((i) => (
-                <span key={i} className="px-10">
-                  🍂 THANKSGIVING SPECIAL! Get Therapy Medical Billing at Just 1.99%. Save More &amp; Grow Your Practice with Prime Therapy Billing! 🎁 Claim Your Deal Today! | Terms Apply.
+                <span key={i} className="px-10 [word-spacing:0.3em]">
+                  THANKSGIVING SPECIAL!<span className="inline-block w-4" /> Get Therapy Medical Billing at Just <span className="text-[16px] sm:text-[17px] font-bold">1.99%</span>. Save More &amp; Grow Your Practice with Prime Therapy Billing! Claim Your Deal Today! | Terms Apply.
                 </span>
               ))}
             </div>
