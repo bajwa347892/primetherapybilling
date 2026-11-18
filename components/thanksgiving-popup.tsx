@@ -1,10 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 
 const OPEN_DELAY_MS = 800;
+// After the visitor closes it the first time, show it once more after this delay.
+const REOPEN_DELAY_MS = 15000;
+const MAX_SHOWS = 2;
 
 export default function ThanksgivingPopup() {
   const [open, setOpen] = useState(false);
@@ -13,9 +16,19 @@ export default function ThanksgivingPopup() {
 
   // Opens on every full site load/refresh. Moving between pages doesn't reopen it,
   // because the layout (and this component) stays mounted during client navigation.
+  const showCount = useRef(0);
+  const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  function show() {
+    showCount.current += 1;
+    setOpen(true);
+  }
+
   useEffect(() => {
-    const t = setTimeout(() => setOpen(true), OPEN_DELAY_MS);
-    return () => clearTimeout(t);
+    timer.current = setTimeout(show, OPEN_DELAY_MS);
+    return () => {
+      if (timer.current) clearTimeout(timer.current);
+    };
   }, []);
 
   useEffect(() => {
@@ -30,13 +43,18 @@ export default function ThanksgivingPopup() {
     };
   }, [open]);
 
-  function close() {
+  // reopen=false when the visitor clicked the CTA, so it never covers the form they opened.
+  function close(reopen = true) {
     setOpen(false);
+    if (timer.current) clearTimeout(timer.current);
+    if (reopen && showCount.current < MAX_SHOWS) {
+      timer.current = setTimeout(show, REOPEN_DELAY_MS);
+    }
   }
 
   // Opens the same form popup as the home page hero's primary button.
   function openHeroPopup() {
-    close();
+    close(false);
     if (pathname === "/") {
       // Let this popup unmount first so the body scroll lock hands over cleanly.
       setTimeout(() => window.dispatchEvent(new Event("open-hero-popup")), 0);
@@ -56,7 +74,7 @@ export default function ThanksgivingPopup() {
       aria-modal="true"
       aria-label="Happy Thanksgiving: complete therapy billing services at just 1.99% (was 3.99%)"
       className="tg-popup-overlay fixed inset-0 z-[9999] flex items-center justify-center bg-black/60 p-4"
-      onClick={close}
+      onClick={() => close()}
     >
       <div
         className="tg-popup-card relative w-full max-w-[920px] overflow-hidden rounded-[22px] shadow-2xl"
@@ -76,7 +94,7 @@ export default function ThanksgivingPopup() {
         {/* Clickable area over the X button in the design */}
         <button
           type="button"
-          onClick={close}
+          onClick={() => close()}
           aria-label="Close offer"
           className="absolute rounded-full cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#7a1458]"
           style={{ left: "92.4%", top: "3.6%", width: "5%", height: "8.8%" }}
