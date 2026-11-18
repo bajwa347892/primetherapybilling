@@ -856,7 +856,7 @@ export default function DenialManagementPage() {
           />
         </div>
 
-        <div className="relative max-w-7xl mx-auto px-6 pt-20 pb-28">
+        <div className="relative max-w-7xl mx-auto px-6 pt-36 pb-28">
           {/* Trust badges */}
           <div className="flex flex-wrap justify-center gap-3 mb-10">
             {[

@@ -768,7 +768,7 @@ function CredentialingFormSection({ onOpenPopup }: { onOpenPopup: () => void }) 
   );
 
   return (
-    <section className="w-full bg-white py-14 sm:py-16 lg:py-20 px-5 sm:px-10 lg:px-24 overflow-x-hidden">
+    <section className="w-full bg-white pt-30 pb-14 sm:pt-32 sm:pb-16 lg:pt-36 lg:pb-20 px-5 sm:px-10 lg:px-24 overflow-x-hidden">
       <style>{ANIMATION_STYLES}</style>
 
       <div className="max-w-[1600px] mx-auto flex flex-col lg:flex-row lg:items-center lg:justify-center">

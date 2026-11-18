@@ -991,7 +991,7 @@ export default function Home() {
             HERO SECTION
         ================================================================ */}
         <section
-  className="relative text-white pt-20 pb-0 sm:pt-28 px-4 sm:px-6 overflow-hidden"
+  className="relative text-white pt-36 pb-0 sm:pt-44 px-4 sm:px-6 overflow-hidden"
   style={{ background: "linear-gradient(135deg, #0e3256 0%, #1a5fa8 55%, #3e8ad6 100%)" }}
 >
   <FloatingParticles />

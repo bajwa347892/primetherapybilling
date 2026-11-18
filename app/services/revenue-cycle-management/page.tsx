@@ -2,7 +2,7 @@ import React from "react";
 
 const WorkingProcessSection: React.FC = () => {
   return (
-    <div className="bg-pattern min-h-screen flex items-center justify-center font-sans antialiased py-20 px-4">
+    <div className="bg-pattern min-h-screen flex items-center justify-center font-sans antialiased pt-36 pb-20 px-4">
       <section className="max-w-7xl mx-auto w-full relative z-10">
         {/* Header */}
         <div className="text-center mb-16">

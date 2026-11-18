@@ -775,7 +775,7 @@ export default function AboutPage() {
             HERO
         ════════════════════════════════════════════════ */}
         <section
-          className="relative text-white py-28 sm:py-36 px-4 sm:px-6 text-center overflow-hidden"
+          className="relative text-white pt-44 pb-28 sm:pt-52 sm:pb-36 px-4 sm:px-6 text-center overflow-hidden"
           style={{
             background:
               "linear-gradient(135deg, #0e3256 0%, #1a5fa8 55%, #3e8ad6 100%)",

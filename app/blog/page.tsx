@@ -24,7 +24,7 @@ export default async function BlogPage() {
   }
 
   return (
-    <div className="max-w-7xl mx-auto py-16 px-6 pt-32">
+    <div className="max-w-7xl mx-auto py-16 px-6 pt-48">
       <h1 className="text-4xl font-bold text-center mb-12">
         Our Latest Blog
       </h1>

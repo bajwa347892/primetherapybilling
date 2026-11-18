@@ -461,7 +461,7 @@ export default function DenialManagementPage() {
             HERO SECTION
         ══════════════════════════════════════════════════════════ */}
         <section
-          className="relative text-white py-24 sm:py-32 px-4 sm:px-6 text-center overflow-hidden"
+          className="relative text-white pt-40 pb-24 sm:pt-48 sm:pb-32 px-4 sm:px-6 text-center overflow-hidden"
           style={{ background: primaryGradient }}
         >
           {/* Background blobs */}

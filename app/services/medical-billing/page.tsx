@@ -339,7 +339,7 @@ export default function MedicalBillingPage() {
             HERO SECTION
         ══════════════════════════════════════════════════════════ */}
         <section
-          className="relative text-white py-24 sm:py-32 px-4 sm:px-6 text-center overflow-hidden"
+          className="relative text-white pt-40 pb-24 sm:pt-48 sm:pb-32 px-4 sm:px-6 text-center overflow-hidden"
           style={{ background: primaryGradient }}
         >
           <div className="absolute top-10 left-10 w-72 h-72 rounded-full opacity-10 blur-3xl pointer-events-none" style={{ background: "#3e8ad6" }} />
