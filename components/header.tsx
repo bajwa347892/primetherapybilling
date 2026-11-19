@@ -294,8 +294,7 @@ function MobileAccordion({
 // ─── Main Header Component ────────────────────────────────────────────────────
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const pathname = usePathname();
+  const [mobileOpen, setMobileOpen] = useState(false);  const pathname = usePathname();
 
   // ── Scroll detection ──
   useEffect(() => {
@@ -516,10 +515,13 @@ export default function Header() {
       {/* ══════════════════════════════════════════════════════════════════
           PROMO TICKER — inside the navbar card so it always matches its width
       ══════════════════════════════════════════════════════════════════ */}
-      <Link
-        href="/contact-us"
+      <button
+        type="button"
+        // Opens the harvest ticket popup rendered by <ThanksgivingPopup /> in the root layout.
+        onClick={() => window.dispatchEvent(new Event("open-thanksgiving-ticket"))}
+        aria-haspopup="dialog"
         aria-label="Thanksgiving special: Therapy medical billing at just 1.99%. Claim your deal today. Terms apply."
-        className="promo-ticker block overflow-hidden text-white text-[13px] sm:text-sm font-medium py-2 transition-all duration-[350ms] ease-in-out"
+        className="promo-ticker block w-full cursor-pointer overflow-hidden text-left text-white text-[13px] sm:text-sm font-medium py-2 transition-all duration-[350ms] ease-in-out"
         style={{
           // Brown overlay keeps the white text readable over the autumn photo;
           // the gradient underneath is the fallback while the image loads.
@@ -545,7 +547,7 @@ export default function Header() {
             </div>
           ))}
         </div>
-      </Link>
+      </button>
       </div>
       <style>{`
         .promo-ticker-track { animation: promo-ticker-scroll 60s linear infinite; }

@@ -659,23 +659,6 @@ export default function Home() {
   };
 
   const closePopup = () => setPopupOpen(false);
-
-  // Thanksgiving popup CTA opens the same form as the hero's primary button.
-  useEffect(() => {
-    const openHeroPopup = () => openPopup(
-      "Claim Your Free Revenue Audit",
-      "Discover hidden billing leaks and recover lost income — zero obligation, real insights."
-    );
-    try {
-      if (sessionStorage.getItem("ptb-open-hero-popup") === "1") {
-        sessionStorage.removeItem("ptb-open-hero-popup");
-        openHeroPopup();
-      }
-    } catch {}
-    window.addEventListener("open-hero-popup", openHeroPopup);
-    return () => window.removeEventListener("open-hero-popup", openHeroPopup);
-  }, []);
-
   const rcmFee = 2.99;
   const inHouseBillingCost = (annualCollections * inHouseCost) / 100 + extraOverhead;
   const rcmBillingCost = (annualCollections * rcmFee) / 100;

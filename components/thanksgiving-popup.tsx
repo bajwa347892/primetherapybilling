@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { usePathname, useRouter } from "next/navigation";
+import ThanksgivingOfferForm from "@/components/thanksgiving-offer-form";
+import ThanksgivingTickerPopup from "@/components/thanksgiving-ticker-popup";
 
 const OPEN_DELAY_MS = 800;
 // After the visitor closes it the first time, show it once more after this delay.
@@ -11,8 +12,19 @@ const MAX_SHOWS = 2;
 
 export default function ThanksgivingPopup() {
   const [open, setOpen] = useState(false);
-  const pathname = usePathname();
-  const router = useRouter();
+  const [formOpen, setFormOpen] = useState(false);
+  // Keeps the timed banner from popping up over the ticket or the form.
+  const formOrTicketOpen = useRef(false);
+  const closeForm = useCallback(() => {
+    formOrTicketOpen.current = false;
+    setFormOpen(false);
+  }, []);
+  // Harvest ticket popup, opened by clicking the promo ticker in the header.
+  const [ticketOpen, setTicketOpen] = useState(false);
+  const closeTicket = useCallback(() => {
+    formOrTicketOpen.current = false;
+    setTicketOpen(false);
+  }, []);
 
   // Opens on every full site load/refresh. Moving between pages doesn't reopen it,
   // because the layout (and this component) stays mounted during client navigation.
@@ -20,9 +32,21 @@ export default function ThanksgivingPopup() {
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   function show() {
+    if (formOrTicketOpen.current) return;
     showCount.current += 1;
     setOpen(true);
   }
+
+  useEffect(() => {
+    const openTicket = () => {
+      setOpen(false);
+      setFormOpen(false);
+      formOrTicketOpen.current = true;
+      setTicketOpen(true);
+    };
+    window.addEventListener("open-thanksgiving-ticket", openTicket);
+    return () => window.removeEventListener("open-thanksgiving-ticket", openTicket);
+  }, []);
 
   useEffect(() => {
     timer.current = setTimeout(show, OPEN_DELAY_MS);
@@ -52,21 +76,22 @@ export default function ThanksgivingPopup() {
     }
   }
 
-  // Opens the same form popup as the home page hero's primary button.
-  function openHeroPopup() {
+  // CTA swaps this banner for the Thanksgiving offer form popup (works on every page).
+  function openOfferForm() {
     close(false);
-    if (pathname === "/") {
-      // Let this popup unmount first so the body scroll lock hands over cleanly.
-      setTimeout(() => window.dispatchEvent(new Event("open-hero-popup")), 0);
-    } else {
-      try {
-        sessionStorage.setItem("ptb-open-hero-popup", "1");
-      } catch {}
-      router.push("/");
-    }
+    formOrTicketOpen.current = true;
+    setFormOpen(true);
   }
 
-  if (!open) return null;
+  // Ticket "Claim" swaps the ticket for the same offer form.
+  function claimFromTicket() {
+    setTicketOpen(false);
+    formOrTicketOpen.current = true;
+    setFormOpen(true);
+  }
+
+  if (ticketOpen) return <ThanksgivingTickerPopup onClose={closeTicket} onClaim={claimFromTicket} />;
+  if (!open) return formOpen ? <ThanksgivingOfferForm onClose={closeForm} /> : null;
 
   return (
     <div
@@ -103,7 +128,7 @@ export default function ThanksgivingPopup() {
         {/* Clickable area over the "Partner with Prime Therapy Billing Today!" button */}
         <button
           type="button"
-          onClick={openHeroPopup}
+          onClick={openOfferForm}
           aria-label="Partner with Prime Therapy Billing Today"
           className="tg-popup-cta absolute rounded-[12px] cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-white"
           style={{ left: "4.1%", top: "79.1%", width: "50.8%", height: "9.2%" }}

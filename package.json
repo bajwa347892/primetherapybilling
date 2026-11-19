@@ -4,9 +4,9 @@
   "description": "This is a Next.js project",
   "main": "test-supabase-connection.js",
   "scripts": {
-    "dev": "next dev",
-    "build": "prisma generate && next build",
-    "start": "next start"
+    "dev": "node init && next dev",
+    "build": "node init && prisma generate && next build",
+    "start": "node init && next start"
   },
   "repository": {
     "type": "git",
